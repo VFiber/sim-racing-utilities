@@ -1,6 +1,32 @@
 {
   "version": 1,
   "projects": {
+    "racing-model": {
+      "projectType": "library",
+      "root": "libs/racing-model",
+      "sourceRoot": "libs/racing-model/src",
+      "prefix": "sim-utils",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/racing-model"],
+          "options": {
+            "jestConfig": "libs/racing-model/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/racing-model/src/**/*.ts",
+              "libs/racing-model/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
     "sim-fuel-calculator": {
       "projectType": "application",
       "root": "apps/sim-fuel-calculator",
@@ -19,10 +45,16 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "apps/sim-fuel-calculator/src/favicon.ico",
-              "apps/sim-fuel-calculator/src/assets"
+              "apps/sim-fuel-calculator/src/assets",
+              "apps/sim-fuel-calculator/src/manifest.webmanifest"
             ],
-            "styles": ["apps/sim-fuel-calculator/src/styles.scss"],
-            "scripts": []
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "apps/sim-fuel-calculator/src/styles.scss"
+            ],
+            "scripts": [],
+            "serviceWorker": true,
+            "ngswConfigPath": "apps/sim-fuel-calculator/ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -122,6 +154,29 @@
       },
       "tags": [],
       "implicitDependencies": ["sim-fuel-calculator"]
+    },
+    "ui": {
+      "projectType": "library",
+      "root": "libs/ui",
+      "sourceRoot": "libs/ui/src",
+      "prefix": "sim-utils",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui"],
+          "options": {
+            "jestConfig": "libs/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/ui/src/**/*.ts", "libs/ui/src/**/*.html"]
+          }
+        }
+      },
+      "tags": []
     }
   }
 }
