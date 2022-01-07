@@ -2,3 +2,9 @@ fa-icon {
   @apply py-3 text-gray-400;
   cursor: pointer;
 }
+
+::ng-deep {
+  .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0 !important;
+  }
+}

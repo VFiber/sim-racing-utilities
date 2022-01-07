@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FuelCalculatorComponent } from './fuel-calculator.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { FormsModule } from '@angular/forms';
+import { UiModule } from '@sim-utils/ui';
 
 describe('FuelCalculatorComponent', () => {
   let component: FuelCalculatorComponent;
@@ -8,9 +12,15 @@ describe('FuelCalculatorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FuelCalculatorComponent ]
+      imports: [
+        NoopAnimationsModule,
+        MatButtonToggleModule,
+        FormsModule,
+        UiModule
+      ],
+      declarations: [FuelCalculatorComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,13 +1,27 @@
 ::ng-deep .mat-slider-wrapper {
-
   .mat-slider-thumb-container {
     .mat-slider-thumb-label {
-      width: 75px;
-      height: 75px;
-      top: -90px;
+      width: 65px;
+      height: 65px;
+      top: -80px;
       right: -38px;
     }
   }
 }
 
+div.results {
+  @apply py-1 divide-x;
+  & > div {
+    @apply flex flex-col py-1;
 
+    mat-label {
+      @apply block;
+    }
+    .digits {
+      @apply basis-full p-1 block text-2xl;
+      &.time {
+        @apply text-base md:text-xl 2xl:text-2xl;
+      }
+    }
+  }
+}
