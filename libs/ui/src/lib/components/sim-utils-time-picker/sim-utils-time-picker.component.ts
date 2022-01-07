@@ -5,21 +5,23 @@ import { SecondsToIntervalPipe } from '../../seconds-to-interval.pipe';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons/faPencilAlt';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons/faQuestionCircle';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons/faTimesCircle';
+import { FastInputButton, ValueOperationType } from '../../models';
 
 type InputType = null | 'days' | 'hours' | 'minutes' | 'seconds' | 'ms';
 
 @Component({
   selector: 'sim-utils-time-picker',
   template: `
-    <div class="mb-3 mt-10 select-none">
+    <div class="mb-3 mt-8 select-none">
       <div class="p-3 relative bg-gray-50">
         <fa-icon size="lg" [icon]="questionIcon" class="absolute -top-5 left-0 p-5" (click)="tooltip.toggle()"
-          #tooltip="matTooltip"
-          matTooltip="Set the time with the slider or click on the pencil to set one / use the input and type in with the keyboard (Tab / Shift+Tab & Arrows also works!)"
-          matTooltipPosition="above"
+                 #tooltip="matTooltip"
+                 matTooltip="Set the time with the slider or click on the pencil to set one / use the input and type in with the keyboard (Tab / Shift+Tab & Arrows also works!)"
+                 matTooltipPosition="above"
         ></fa-icon>
-        <fa-icon size="2x" [icon]="clearIcon" class="absolute -top-7 right-0 px-5" (click)="clear()" matTooltip="Resets the time" matTooltipPosition="above"></fa-icon>
-        <mat-label class="w-full text-gray-500 block text-center -mb-3">
+        <fa-icon size="2x" [icon]="clearIcon" class="absolute -top-7 right-0 px-5" (click)="clear()"
+                 matTooltip="Resets the time" matTooltipPosition="above"></fa-icon>
+        <mat-label class="w-full text-gray-500 block text-center -mb-3" [class.text-black]="activeInput !== null">
           <ng-container *ngIf="activeInput">
             Slide to change: {{sliderValue}} {{activeInput}}
           </ng-container>
@@ -41,35 +43,39 @@ type InputType = null | 'days' | 'hours' | 'minutes' | 'seconds' | 'ms';
         </mat-slider>
       </div>
       <div class="grid grid-cols-3 gap-3 px-5 pt-5 -mt-12 bg-gray-50">
-        <mat-form-field *ngIf="enableDays">
+        <mat-form-field *ngIf="enableDays" [appearance]="activeInput === 'days' ? 'outline' : 'standard'">
           <mat-label>Days</mat-label>
           <input type="number" min="0" (change)="updateSecondsFromTime()" [(ngModel)]="duration.days" matInput>
           <fa-icon [icon]="editIcon" matSuffix (click)="inputClicked($event, 'days')"></fa-icon>
         </mat-form-field>
-        <mat-form-field *ngIf="enableHours">
+        <mat-form-field *ngIf="enableHours" [appearance]="activeInput === 'hours' ? 'outline' : 'standard'">
           <mat-label>Hours</mat-label>
           <input type="number" min="0" max="23" (change)="updateSecondsFromTime()" [(ngModel)]="duration.hours"
                  matInput>
           <fa-icon [icon]="editIcon" matSuffix (click)="inputClicked($event, 'hours')"></fa-icon>
         </mat-form-field>
-        <mat-form-field *ngIf="enableMinutes">
+        <mat-form-field *ngIf="enableMinutes" [appearance]="activeInput === 'minutes' ? 'outline' : 'standard'">
           <mat-label>Minutes</mat-label>
           <input type="number" min="0" max="59" (change)="updateSecondsFromTime()" [(ngModel)]="duration.minutes"
                  matInput>
           <fa-icon [icon]="editIcon" matSuffix (click)="inputClicked($event, 'minutes')"></fa-icon>
         </mat-form-field>
-        <mat-form-field *ngIf="enableSeconds">
+        <mat-form-field *ngIf="enableSeconds" [appearance]="activeInput === 'seconds' ? 'outline' : 'standard'">
           <mat-label>Seconds</mat-label>
           <input type="number" min="0" max="59" (change)="updateSecondsFromTime()" [(ngModel)]="duration.seconds"
                  matInput>
           <fa-icon [icon]="editIcon" matSuffix (click)="inputClicked($event, 'seconds')"></fa-icon>
         </mat-form-field>
-        <mat-form-field *ngIf="enableMilisecs">
+        <mat-form-field *ngIf="enableMilisecs" [appearance]="activeInput === 'ms' ? 'outline' : 'standard'">
           <mat-label>Miliseconds</mat-label>
           <input type="number" min="0" max="999" step="50" (change)="updateSecondsFromTime()"
                  [(ngModel)]="duration.ms" matInput>
           <fa-icon [icon]="editIcon" matSuffix (click)="inputClicked($event, 'ms')"></fa-icon>
         </mat-form-field>
+      </div>
+      <div *ngIf="fastButtons.length > 0" class="text-center">
+        <button mat-button *ngFor="let button of fastButtons"
+                (click)="fastButtonClick(button)">{{button.title}}</button>
       </div>
     </div>
   `,
@@ -111,6 +117,8 @@ export class SimUtilsTimePickerComponent implements OnInit {
     this.sliderDefaultStep = val;
   };
 
+  @Input() fastButtons: FastInputButton[] = [];
+
   sliderDefaultMin = 0;
   sliderDefaultMax = 60;
   sliderDefaultStep = 1;
@@ -133,7 +141,7 @@ export class SimUtilsTimePickerComponent implements OnInit {
   @Output() durationChanged = new EventEmitter<TimeDuration>();
 
   @Input() set seconds(second: number) {
-    this.updateTimeFromSeconds(second);
+
   }
 
   public secondFromatPipe = new SecondsToIntervalPipe();
@@ -213,7 +221,7 @@ export class SimUtilsTimePickerComponent implements OnInit {
     this.updateSecondsFromTime();
   }
 
-  clear() {
+  clear(onlySelf = false) {
     this.duration = {
       days: 0,
       hours: 0,
@@ -223,7 +231,8 @@ export class SimUtilsTimePickerComponent implements OnInit {
       durationInSeconds: 0
     }
     this.sliderValue = 0;
-    this.durationChanged.emit(this.duration);
+    this.activeInput = null;
+    if (!onlySelf) this.durationChanged.emit(this.duration);
   }
 
   updateTimeFromSeconds(seconds: number) {
@@ -232,7 +241,7 @@ export class SimUtilsTimePickerComponent implements OnInit {
 
     this.duration = {
       ...duration,
-      ms: 0,
+      ms: Math.round((seconds % 1) * 1000),
       durationInSeconds: seconds
     };
 
@@ -248,5 +257,18 @@ export class SimUtilsTimePickerComponent implements OnInit {
       (this.duration.ms ?? 0) / 1000;
 
     this.durationChanged.emit(this.duration);
+  }
+
+  private setSecondsSelf(second: number) {
+    this.clear(true);
+    this.sliderValue = second;
+    this.updateTimeFromSeconds(second);
+  }
+
+  fastButtonClick(button: FastInputButton) {
+    if (button?.type && button.type == ValueOperationType.Replace) {
+      return this.setSecondsSelf(button.value);
+    }
+    return this.setSecondsSelf(this.duration.durationInSeconds + button.value);
   }
 }

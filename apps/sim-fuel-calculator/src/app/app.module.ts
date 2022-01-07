@@ -16,9 +16,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { FuelCalculatorPageComponent } from './pages';
 
 @NgModule({
-  declarations: [AppComponent, FuelCalculatorComponent],
+  declarations: [AppComponent, FuelCalculatorComponent, FuelCalculatorPageComponent],
   imports: [
     BrowserModule,
     ServiceWorkerModule.register('ngsw-worker.js', {

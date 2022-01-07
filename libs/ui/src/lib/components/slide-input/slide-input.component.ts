@@ -6,7 +6,7 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons/faTimesCircle';
 @Component({
   selector: 'sim-utils-slide-input',
   template: `
-    <div class="mb-3 mt-10 select-none p-3 pb-0 relative bg-gray-50 grid grid-cols-3 gap-3">
+    <div class="mb-3 mt-8 select-none p-3 relative bg-gray-50 grid grid-cols-3 gap-3">
       <fa-icon size="lg" [icon]="questionIcon" class="absolute -top-5 left-0 p-5" (click)="tooltip.toggle()"
                #tooltip="matTooltip"
                matTooltip="Use the slider / use the input and type in with the keyboard (Tab / Shift+Tab & Arrows also works!)"

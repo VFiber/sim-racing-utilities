@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SimUtilsTimePickerComponent } from './components/sim-utils-time-picker/sim-utils-time-picker.component';
+import { SimUtilsTimePickerComponent } from './components';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -8,7 +8,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { SecondsToIntervalPipe } from './seconds-to-interval.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SlideInputComponent } from './components/slide-input/slide-input.component';
+import { SlideInputComponent } from './components';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   imports: [
@@ -18,17 +19,18 @@ import { SlideInputComponent } from './components/slide-input/slide-input.compon
     MatInputModule,
     MatSliderModule,
     FontAwesomeModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatButtonModule
   ],
   declarations: [
     SimUtilsTimePickerComponent,
     SecondsToIntervalPipe,
-    SlideInputComponent
+    SlideInputComponent,
   ],
   exports: [
     SimUtilsTimePickerComponent,
     SecondsToIntervalPipe,
-    SlideInputComponent
+    SlideInputComponent,
   ],
   providers: [
     SecondsToIntervalPipe
