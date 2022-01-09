@@ -140,8 +140,8 @@ export class SimUtilsTimePickerComponent implements OnInit {
 
   @Output() durationChanged = new EventEmitter<TimeDuration>();
 
-  @Input() set seconds(second: number) {
-
+  @Input() set durationInSeconds(second: number) {
+    // TODO: implement :D
   }
 
   public secondFromatPipe = new SecondsToIntervalPipe();

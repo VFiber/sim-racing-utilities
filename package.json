@@ -1,6 +1,6 @@
 {
   "name": "sim-utils",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "license": "MIT",
   "scripts": {
     "ng": "nx",
@@ -8,7 +8,11 @@
     "start": "nx serve",
     "start:ip": "nx serve --host=0.0.0.0 --disable-host-check",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "lint:all": "nx run-many --target=lint --all",
+    "test:all": "nx run-many --target=test --all",
+    "build:prod": "nx run-many --target=build --all --prod",
+    "build-release": "npm run lint:all && npm run test:all && npm run build:prod"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +30,7 @@
     "@fortawesome/angular-fontawesome": "^0.10.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@ngrx/component": "^13.0.2",
     "@ngrx/component-store": "~13.0.0",
     "@ngrx/effects": "~13.0.0",
     "@ngrx/entity": "~13.0.0",
@@ -74,4 +79,3 @@
     "typescript": "~4.4.3"
   }
 }
-

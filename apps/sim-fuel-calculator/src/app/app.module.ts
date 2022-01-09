@@ -17,6 +17,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuelCalculatorPageComponent } from './pages';
+import { CalculatorEffects } from './state/calculator.effects';
+import { calculatorFeatureKey, reducer as CalculatorReducer } from './state/calculator.reducer';
+import { ReactiveComponentModule } from '@ngrx/component';
 
 @NgModule({
   declarations: [AppComponent, FuelCalculatorComponent, FuelCalculatorPageComponent],
@@ -30,7 +33,9 @@ import { FuelCalculatorPageComponent } from './pages';
     }),
     UiModule,
     StoreModule.forRoot(
-      {},
+      {
+        [calculatorFeatureKey]: CalculatorReducer
+      },
       {
         metaReducers: !environment.production ? [] : [],
         runtimeChecks: {
@@ -47,7 +52,9 @@ import { FuelCalculatorPageComponent } from './pages';
     MatFormFieldModule,
     MatInputModule,
     MatSliderModule,
-    MatTooltipModule
+    MatTooltipModule,
+    EffectsModule.forFeature([CalculatorEffects]),
+    ReactiveComponentModule
   ],
   providers: [
   ],

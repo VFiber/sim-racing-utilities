@@ -1,11 +1,48 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { FuelCalculatorPageComponent } from './pages';
+import { FuelCalculatorComponent } from './components/fuel-calculator/fuel-calculator.component';
+import { UiModule } from '@sim-utils/ui';
+import { provideMockStore } from '@ngrx/store/testing';
+import { SelectCalculator } from './state';
+import { initialState } from './state/calculator.reducer';
+import { ReactiveComponentModule } from '@ngrx/component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppComponent, NxWelcomeComponent],
+      declarations: [
+        AppComponent,
+        FuelCalculatorComponent,
+        FuelCalculatorPageComponent
+      ],
+      imports: [
+        UiModule,
+        NoopAnimationsModule,
+        MatButtonToggleModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSliderModule,
+        MatTooltipModule,
+        ReactiveComponentModule
+      ],
+      providers: [
+        provideMockStore({
+          selectors: [
+            {
+              selector: SelectCalculator.state,
+              value: initialState
+            }]
+        })
+      ]
     }).compileComponents();
   });
 
@@ -15,18 +52,12 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'sim-fuel-calculator'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('sim-fuel-calculator');
-  });
-
-  it('should render title', () => {
+  it('should render footer', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Welcome sim-fuel-calculator'
+    expect(compiled.querySelector('footer')?.textContent).toContain(
+      'SimRacing fuel calculator'
     );
   });
 });

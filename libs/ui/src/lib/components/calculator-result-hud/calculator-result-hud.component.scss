@@ -1,0 +1,16 @@
+div.results {
+  @apply py-1 divide-x;
+  & > div {
+    @apply flex flex-col py-1;
+
+    mat-label {
+      @apply block;
+    }
+    .digits {
+      @apply basis-full p-1 block text-2xl;
+      &.time {
+        @apply text-base md:text-xl 2xl:text-2xl;
+      }
+    }
+  }
+}
