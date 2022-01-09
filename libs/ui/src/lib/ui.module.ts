@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SimUtilsTimePickerComponent } from './components';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
-import { SecondsToIntervalPipe } from './seconds-to-interval.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SlideInputComponent } from './components';
 import { MatButtonModule } from '@angular/material/button';
+import { CalculatorResultHudComponent, SimUtilsTimePickerComponent, SlideInputComponent } from './components';
+import { SecondsToIntervalPipe } from './seconds-to-interval.pipe';
 
 @NgModule({
   imports: [
@@ -26,11 +25,13 @@ import { MatButtonModule } from '@angular/material/button';
     SimUtilsTimePickerComponent,
     SecondsToIntervalPipe,
     SlideInputComponent,
+    CalculatorResultHudComponent
   ],
   exports: [
     SimUtilsTimePickerComponent,
     SecondsToIntervalPipe,
     SlideInputComponent,
+    CalculatorResultHudComponent
   ],
   providers: [
     SecondsToIntervalPipe

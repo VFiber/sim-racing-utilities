@@ -1,6 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FuelCalculatorPageComponent } from './fuel-calculator-page.component';
+import { FuelCalculatorComponent } from '../../components/fuel-calculator/fuel-calculator.component';
+import { provideMockStore } from '@ngrx/store/testing';
+import { ReactiveComponentModule } from '@ngrx/component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { UiModule } from '@sim-utils/ui';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { SelectCalculator } from '../../state';
+import { initialState } from '../../state/calculator.reducer';
 
 describe('FuelCalculatorPageComponent', () => {
   let component: FuelCalculatorPageComponent;
@@ -8,9 +17,28 @@ describe('FuelCalculatorPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FuelCalculatorPageComponent ]
+      imports: [
+        NoopAnimationsModule,
+        UiModule,
+        MatFormFieldModule,
+        MatButtonToggleModule,
+        ReactiveComponentModule
+      ],
+      declarations: [
+        FuelCalculatorPageComponent,
+        FuelCalculatorComponent
+      ],
+      providers: [
+        provideMockStore({
+          selectors: [
+            {
+              selector: SelectCalculator.state,
+              value: initialState
+            }]
+        })
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
