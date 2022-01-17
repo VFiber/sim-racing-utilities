@@ -3,8 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 @Component({
   selector: 'sim-utils-calculator-result-hud',
   template: `
-    <div
-      class="results text-center bg-gray-50 grid grid-cols-4">
+    <div class="results text-center bg-gray-50 dark:bg-gray-900 grid grid-cols-4">
       <div>
         <span class="digits" *ngIf="(lapCount * fuelPerLap) !== 0">
           {{((lapCount + 1) * fuelPerLap) | number: '1.0-1' }}

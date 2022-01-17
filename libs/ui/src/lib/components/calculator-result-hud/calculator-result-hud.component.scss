@@ -1,5 +1,5 @@
 div.results {
-  @apply py-1 divide-x;
+  @apply py-1 divide-x dark:divide-gray-700;
   & > div {
     @apply flex flex-col py-1;
 
@@ -9,7 +9,7 @@ div.results {
     .digits {
       @apply basis-full p-1 block text-2xl;
       &.time {
-        @apply text-base md:text-xl 2xl:text-2xl;
+        @apply text-lg md:text-2xl 2xl:text-2xl;
       }
     }
   }

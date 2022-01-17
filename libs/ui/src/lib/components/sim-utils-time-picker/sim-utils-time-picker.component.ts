@@ -4,8 +4,8 @@ import { TimeDuration } from '@sim-utils/racing-model';
 import { SecondsToIntervalPipe } from '../../seconds-to-interval.pipe';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons/faPencilAlt';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons/faQuestionCircle';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons/faTimesCircle';
 import { FastInputButton, ValueOperationType } from '../../models';
+import { faRedo } from '@fortawesome/free-solid-svg-icons/faRedo';
 
 type InputType = null | 'days' | 'hours' | 'minutes' | 'seconds' | 'ms';
 
@@ -13,7 +13,7 @@ type InputType = null | 'days' | 'hours' | 'minutes' | 'seconds' | 'ms';
   selector: 'sim-utils-time-picker',
   template: `
     <div class="mb-3 mt-8 select-none">
-      <div class="p-3 relative bg-gray-50">
+      <div class="p-3 relative bg-gray-50 dark:bg-gray-900">
         <fa-icon size="lg" [icon]="questionIcon" class="absolute -top-5 left-0 p-5" (click)="tooltip.toggle()"
                  #tooltip="matTooltip"
                  matTooltip="Set the time with the slider or click on the pencil to set one / use the input and type in with the keyboard (Tab / Shift+Tab & Arrows also works!)"
@@ -21,7 +21,7 @@ type InputType = null | 'days' | 'hours' | 'minutes' | 'seconds' | 'ms';
         ></fa-icon>
         <fa-icon size="2x" [icon]="clearIcon" class="absolute -top-7 right-0 px-5" (click)="clear()"
                  matTooltip="Resets the time" matTooltipPosition="above"></fa-icon>
-        <mat-label class="w-full text-gray-500 block text-center -mb-3" [class.text-black]="activeInput !== null">
+        <mat-label class="w-full text-gray-500 dark:text-gray-300 block text-center -mb-3" [class.text-black]="activeInput !== null">
           <ng-container *ngIf="activeInput">
             Slide to change: {{sliderValue}} {{activeInput}}
           </ng-container>
@@ -42,7 +42,7 @@ type InputType = null | 'days' | 'hours' | 'minutes' | 'seconds' | 'ms';
         >
         </mat-slider>
       </div>
-      <div class="grid grid-cols-3 gap-3 px-5 pt-5 -mt-12 bg-gray-50">
+      <div class="grid grid-cols-3 gap-3 px-5 pt-5 -mt-12 bg-gray-50 dark:bg-gray-900">
         <mat-form-field *ngIf="enableDays" [appearance]="activeInput === 'days' ? 'outline' : 'standard'">
           <mat-label>Days</mat-label>
           <input type="number" min="0" (change)="updateSecondsFromTime()" [(ngModel)]="duration.days" matInput>
@@ -87,7 +87,7 @@ export class SimUtilsTimePickerComponent implements OnInit {
 
   editIcon = faPencilAlt;
   questionIcon = faQuestionCircle;
-  clearIcon = faTimesCircle;
+  clearIcon = faRedo;
 
   enableDays = false;
   enableHours = false;

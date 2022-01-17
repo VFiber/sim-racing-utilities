@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons/faQuestionCircle';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons/faTimesCircle';
+import { faRedo } from '@fortawesome/free-solid-svg-icons/faRedo';
 
 @Component({
   selector: 'sim-utils-slide-input',
   template: `
-    <div class="mb-3 mt-8 select-none p-3 relative bg-gray-50 grid grid-cols-3 gap-3">
+    <div class="mb-3 mt-8 select-none p-3 relative bg-gray-50 dark:bg-gray-900 grid grid-cols-3 gap-3">
       <fa-icon size="lg" [icon]="questionIcon" class="absolute -top-5 left-0 p-5" (click)="!disabled ? tooltip.toggle() :''"
                #tooltip="matTooltip"
                matTooltip="Use the slider / use the input and type in with the keyboard (Tab / Shift+Tab & Arrows also works!)"
@@ -15,7 +15,7 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons/faTimesCircle';
       <fa-icon size="2x" [icon]="clearIcon" class="absolute -top-7 right-0 px-5" (click)="clear()"
                matTooltip="Resets to 0" matTooltipPosition="above"></fa-icon>
       <div class="col-span-3">
-        <mat-label class="w-full text-gray-500 block text-center -mb-3">
+        <mat-label class="w-full text-gray-500 dark:text-gray-300 block text-center -mb-3">
           {{label}} - {{value}}
         </mat-label>
         <mat-slider class="w-full" thumbLabel
@@ -52,7 +52,7 @@ export class SlideInputComponent implements ControlValueAccessor {
   @Output() valueChange = new EventEmitter<number>();
 
   questionIcon = faQuestionCircle;
-  clearIcon = faTimesCircle;
+  clearIcon = faRedo;
 
   disabled = false;
 

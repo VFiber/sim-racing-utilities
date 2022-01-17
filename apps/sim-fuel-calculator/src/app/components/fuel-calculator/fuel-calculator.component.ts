@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BasicRaceData, RaceDurationType, TimeDuration } from '@sim-utils/racing-model';
-import { createSelector, Store } from '@ngrx/store';
-import { CalculatorActions, SelectCalculator } from '../../state';
+import { Store } from '@ngrx/store';
 import { FastInputButton } from '@sim-utils/ui';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { FuelCalculatorService } from '../../services/fuel-calculator.service';
 
 @Component({
   selector: 'sim-utils-fuel-calculator',
@@ -12,21 +12,23 @@ import { map, Observable } from 'rxjs';
       <div class="xl:col-span-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 lg:gap-4 items-center">
 
         <sim-utils-calculator-result-hud
-          class="shadow-md border lg:shadow-none landscape:shadow-none sticky landscape:relative md:rounded-xl
+          class="shadow-md border dark:border-gray-900 lg:shadow-none landscape:shadow-none sticky landscape:relative md:rounded-xl
           md:col-span-2 lg:col-span-7 lg:relative top-0 z-10"
           [fuelPerLap]="(fuelPerLap$ | ngrxPush) ?? 0"
           [lapCount]="(lapCount$ | ngrxPush) ?? 0"
           [raceTimeInSeconds]="(raceTimeInSeconds$ | ngrxPush) ?? 0"
         ></sim-utils-calculator-result-hud>
 
-        <div class="text-center mt-5 md:mt-0 lg:col-span-5">
+        <div class="text-center mt-5 md:mt-0 lg:col-span-5 p-5" [class.md:col-span-2]="raceTypeIsUnknown$ | ngrxPush">
           <mat-label class="block">Race duration type</mat-label>
           <mat-button-toggle-group class="w-3/5 max-w-xs" (change)="raceTypeChanged($event.value)"
                                    aria-label="Race Type">
             <mat-button-toggle class="w-1/2" [value]="RaceType.Time">Time based</mat-button-toggle>
             <mat-button-toggle class="w-1/2" [value]="RaceType.Lap">Lap based</mat-button-toggle>
           </mat-button-toggle-group>
-          <div class="choose-racetype w-full mt-5 text-center" *ngIf="raceTypeIsUnknown$ | ngrxPush">Please choose race type</div>
+          <div class="choose-racetype w-full mt-5 text-center" *ngIf="raceTypeIsUnknown$ | ngrxPush">Please choose race
+            type
+          </div>
         </div>
 
         <sim-utils-slide-input class="lg:col-span-6"
@@ -61,35 +63,35 @@ import { map, Observable } from 'rxjs';
       </div>
 
       <div
-        class="border grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 xl:col-span-4 bg-white overflow-hidden sm:rounded-lg"
+        class="border dark:border-gray-700 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 xl:col-span-4 bg-white dark:bg-gray-900 overflow-hidden sm:rounded-lg"
         *ngIf="!(raceTypeIsUnknown$ | ngrxPush)">
         <div>
           <dl>
-            <div class="bg-gray-50 grid grid-cols-2 gap-4 p-6">
-              <dt class="text-sm text-center font-medium text-gray-500">
+            <div class="bg-gray-50 dark:bg-gray-800 grid grid-cols-2 gap-4 p-6">
+              <dt class="text-sm text-center font-medium">
                 &#8721; Recommended fuel amount (race + 1 formation lap)
               </dt>
-              <dd class="text-gray-900 text-xl text-center">
+              <dd class="text-xl text-center">
                 <ng-container *ngIf="(canCalculateFuelConsumption$ | ngrxPush) else unknown">
                   {{recommendedFuelConsumption$ | ngrxPush | number: '1.3-3' }}
                 </ng-container>
               </dd>
             </div>
-            <div class="bg-white grid grid-cols-2 gap-4 p-6">
-              <dt class="text-sm font-medium text-gray-500">
+            <div class="bg-white dark:bg-gray-900 grid grid-cols-2 gap-4 p-6">
+              <dt class="text-sm font-medium">
                 &#x222b; Exact fuel amount required (race only)
               </dt>
-              <dd class="text-gray-900 text-xl text-center">
+              <dd class="text-xl text-center">
                 <ng-container *ngIf="(canCalculateFuelConsumption$ | ngrxPush) else unknown">
                   {{ exactFuelConsumption$ | ngrxPush | number: '1.3-3' }}
                 </ng-container>
               </dd>
             </div>
-            <div class="bg-gray-50 grid grid-cols-2 gap-4 p-6" *ngIf="(raceTimeInSeconds$ | ngrxPush)">
-              <dt class="text-sm text-center font-medium text-gray-500">
+            <div class="bg-gray-50 dark:bg-gray-800 grid grid-cols-2 gap-4 p-6" *ngIf="(raceTimeInSeconds$ | ngrxPush)">
+              <dt class="text-sm text-center font-medium">
                 Race time (race + 1 formation lap)
               </dt>
-              <dd class="text-gray-900 text-xl text-center">
+              <dd class="text-xl text-center">
                 <ng-container *ngIf="(raceTimeInSeconds$ | ngrxPush) else unknown">
                   {{ (raceTimeInSeconds$ | ngrxPush) ?? 0 | secondsToInterval }}
                 </ng-container>
@@ -98,7 +100,7 @@ import { map, Observable } from 'rxjs';
           </dl>
           <ng-template #unknown>?</ng-template>
         </div>
-        <article class="mt-8 md:mt-0 p-5 prose lg:prose-xl bg-gray-50">
+        <article class="mt-8 md:mt-0 p-5 prose lg:prose-xl bg-gray-50 dark:bg-gray-900">
           <h2>Formula</h2>
           <p>
       <span class="underline cursor-pointer"
@@ -148,44 +150,39 @@ export class FuelCalculatorComponent {
   ];
   RaceType = RaceDurationType;
 
-  raceType$ = this.store.select(SelectCalculator.raceType);
-  raceTypeIsUnknown$ = this.store.select(createSelector(SelectCalculator.raceType, type => type === RaceDurationType.Unknown));
+  raceType$ = this.calculatorService.raceType$;
+  raceTypeIsUnknown$ = this.calculatorService.raceTypeIsUnknown$;
 
-  fuelPerLap$: Observable<number> = this.store.select(SelectCalculator.fuelPerLap);
-  lapCount$: Observable<number> = this.store.select(SelectCalculator.lapCount);
+  fuelPerLap$: Observable<number> = this.calculatorService.fuelPerLap$;
+  lapCount$: Observable<number> = this.calculatorService.lapCount$;
 
-  exactFuelConsumption$: Observable<number> = this.store.select(SelectCalculator.exactFuelConsumption);
+  exactFuelConsumption$: Observable<number> = this.calculatorService.exactFuelConsumption$;
+  canCalculateFuelConsumption$: Observable<boolean> = this.calculatorService.canCalculateFuelConsumption$;
 
-  canCalculateFuelConsumption$: Observable<boolean> =
-    this.store.select(SelectCalculator.exactFuelConsumption)
-      .pipe(
-        map(consumption => consumption > 0)
-      );
+  recommendedFuelConsumption$: Observable<number> = this.calculatorService.recommendedFuelConsumption$;
 
-  recommendedFuelConsumption$: Observable<number> = this.store.select(SelectCalculator.recommendedFuelConsumption);
+  lapTimeInSeconds$: Observable<number> = this.calculatorService.lapTimeInSeconds$;
+  raceTimeInSeconds$: Observable<number> = this.calculatorService.raceTimeInSeconds$;
 
-  lapTimeInSeconds$: Observable<number> = this.store.select(SelectCalculator.lapTime);
-  raceTimeInSeconds$: Observable<number> = this.store.select(SelectCalculator.raceTime);
-
-  constructor(private store: Store<BasicRaceData>) {}
+  constructor(private store: Store<BasicRaceData>, private calculatorService: FuelCalculatorService) {}
 
   raceTypeChanged(newRaceType: RaceDurationType) {
-    this.store.dispatch(CalculatorActions.raceTypeChanged({raceType: newRaceType}))
+    this.calculatorService.raceTypeChanged(newRaceType);
   }
 
   fuelPerLapChanged(newValue: number) {
-    this.store.dispatch(CalculatorActions.fuelPerLapChanged({fuelPerLap: newValue}))
+    this.calculatorService.fuelPerLapChanged(newValue);
   }
 
   raceTimeChanged(timeDuration: TimeDuration) {
-    this.store.dispatch(CalculatorActions.raceTimeChanged({raceSeconds: timeDuration.durationInSeconds}))
+    this.calculatorService.raceTimeChanged(timeDuration);
   }
 
   lapTimeChanged(timeDuration: TimeDuration) {
-    this.store.dispatch(CalculatorActions.lapTimeChanged({lapSeconds: timeDuration.durationInSeconds}))
+    this.calculatorService.lapTimeChanged(timeDuration);
   }
 
   lapCountChanged(lapcount: number) {
-    this.store.dispatch(CalculatorActions.lapCountChanged({lapCount: lapcount}))
+    this.calculatorService.lapCountChanged(lapcount);
   }
 }
