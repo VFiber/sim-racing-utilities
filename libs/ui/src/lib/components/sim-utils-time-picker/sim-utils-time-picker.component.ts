@@ -141,7 +141,8 @@ export class SimUtilsTimePickerComponent implements OnInit {
   @Output() durationChanged = new EventEmitter<TimeDuration>();
 
   @Input() set durationInSeconds(second: number) {
-    // TODO: implement :D
+    this.updateTimeFromSeconds(second);
+    this.sliderValue = second;
   }
 
   public secondFromatPipe = new SecondsToIntervalPipe();

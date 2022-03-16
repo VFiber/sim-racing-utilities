@@ -20,9 +20,15 @@ import { FuelCalculatorPageComponent } from './pages';
 import { CalculatorEffects } from './state/calculator.effects';
 import { calculatorFeatureKey, reducer as CalculatorReducer } from './state/calculator.reducer';
 import { ReactiveComponentModule } from '@ngrx/component';
+import * as fromExternalStorage from './state/exstorage/external-storage.reducer';
+import { ExternalStorageEffects } from './state/exstorage/external-storage.effects';
 
 @NgModule({
-  declarations: [AppComponent, FuelCalculatorComponent, FuelCalculatorPageComponent],
+  declarations: [
+    AppComponent,
+    FuelCalculatorComponent,
+    FuelCalculatorPageComponent
+  ],
   imports: [
     BrowserModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -34,7 +40,8 @@ import { ReactiveComponentModule } from '@ngrx/component';
     UiModule,
     StoreModule.forRoot(
       {
-        [calculatorFeatureKey]: CalculatorReducer
+        [calculatorFeatureKey]: CalculatorReducer,
+        [fromExternalStorage.EXTERNAL_STORAGE_FEATURE_KEY]: fromExternalStorage.reducer
       },
       {
         metaReducers: !environment.production ? [] : [],
@@ -44,7 +51,7 @@ import { ReactiveComponentModule } from '@ngrx/component';
         }
       }
     ),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([CalculatorEffects, ExternalStorageEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     BrowserAnimationsModule,
     MatButtonToggleModule,
@@ -53,11 +60,9 @@ import { ReactiveComponentModule } from '@ngrx/component';
     MatInputModule,
     MatSliderModule,
     MatTooltipModule,
-    EffectsModule.forFeature([CalculatorEffects]),
-    ReactiveComponentModule
+    ReactiveComponentModule,
   ],
-  providers: [
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

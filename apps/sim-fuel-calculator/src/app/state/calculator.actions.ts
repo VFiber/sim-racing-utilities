@@ -1,8 +1,13 @@
 import { createAction, props } from '@ngrx/store';
-import { RaceDurationType } from '@sim-utils/racing-model';
+import { BasicRaceData, RaceDurationType } from '@sim-utils/racing-model';
 
 export const calculatorReseted = createAction(
   '[Calculator] Reset'
+)
+
+export const calculatorStateHydrated = createAction(
+  '[Calculator] State hydrated',
+  props<{ state: BasicRaceData }>()
 )
 
 export const raceTypeChanged = createAction(
@@ -29,5 +34,3 @@ export const raceTimeChanged = createAction(
   '[Calculator] Race time changed',
   props<{ raceSeconds: number }>()
 );
-
-

@@ -9,7 +9,9 @@
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/racing-model"],
+          "outputs": [
+            "coverage/libs/racing-model"
+          ],
           "options": {
             "jestConfig": "libs/racing-model/jest.config.js",
             "passWithNoTests": true
@@ -35,7 +37,9 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/sim-fuel-calculator",
             "index": "apps/sim-fuel-calculator/src/index.html",
@@ -118,7 +122,9 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/sim-fuel-calculator"],
+          "outputs": [
+            "coverage/apps/sim-fuel-calculator"
+          ],
           "options": {
             "jestConfig": "apps/sim-fuel-calculator/jest.config.js",
             "passWithNoTests": true
@@ -146,14 +152,20 @@
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["apps/sim-fuel-calculator-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/sim-fuel-calculator-e2e/**/*.{js,ts}"
+            ]
           }
         }
       },
       "tags": [],
-      "implicitDependencies": ["sim-fuel-calculator"]
+      "implicitDependencies": [
+        "sim-fuel-calculator"
+      ]
     },
     "ui": {
       "projectType": "library",
@@ -163,7 +175,9 @@
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/ui"],
+          "outputs": [
+            "coverage/libs/ui"
+          ],
           "options": {
             "jestConfig": "libs/ui/jest.config.js",
             "passWithNoTests": true
@@ -172,7 +186,10 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/ui/src/**/*.ts", "libs/ui/src/**/*.html"]
+            "lintFilePatterns": [
+              "libs/ui/src/**/*.ts",
+              "libs/ui/src/**/*.html"
+            ]
           }
         }
       },

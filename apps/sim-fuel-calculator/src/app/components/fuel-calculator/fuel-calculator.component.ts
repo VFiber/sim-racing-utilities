@@ -22,6 +22,7 @@ import { FuelCalculatorService } from '../../services/fuel-calculator.service';
         <div class="text-center mt-5 md:mt-0 lg:col-span-5 p-5" [class.md:col-span-2]="raceTypeIsUnknown$ | ngrxPush">
           <mat-label class="block">Race duration type</mat-label>
           <mat-button-toggle-group class="w-3/5 max-w-xs" (change)="raceTypeChanged($event.value)"
+                                   [value]="raceType$ | ngrxPush"
                                    aria-label="Race Type">
             <mat-button-toggle class="w-1/2" [value]="RaceType.Time">Time based</mat-button-toggle>
             <mat-button-toggle class="w-1/2" [value]="RaceType.Lap">Lap based</mat-button-toggle>
@@ -35,13 +36,16 @@ import { FuelCalculatorService } from '../../services/fuel-calculator.service';
                                *ngIf="!(raceTypeIsUnknown$ | ngrxPush)"
                                label="Fuel / Lap"
                                step="0.01" min="0" max="10" (valueChange)="fuelPerLapChanged($event)"
+                               [value]="fuelPerLap$ | ngrxPush"
         ></sim-utils-slide-input>
 
         <sim-utils-slide-input class="md:col-span-2 lg:col-span-6"
                                *ngIf="(raceType$ | ngrxPush) === RaceType.Lap"
                                label="Laps"
                                step="1" min="0" max="100"
-                               (valueChange)="lapCountChanged($event)"></sim-utils-slide-input>
+                               (valueChange)="lapCountChanged($event)"
+                               [value]="lapCount$ | ngrxPush"
+        ></sim-utils-slide-input>
 
         <sim-utils-time-picker class="md:col-span-2"
                                [ngClass]="(raceType$ | ngrxPush) === RaceType.Lap ? 'lg:col-span-12' : 'lg:col-span-6'"
@@ -49,7 +53,8 @@ import { FuelCalculatorService } from '../../services/fuel-calculator.service';
                                inputTitle="Lap time - "
                                [min]="0" [max]="300"
                                [durationInSeconds]="(lapTimeInSeconds$ | ngrxPush) ?? 0"
-                               (durationChanged)="lapTimeChanged($event)"></sim-utils-time-picker>
+                               (durationChanged)="lapTimeChanged($event)"
+        ></sim-utils-time-picker>
 
         <ng-container [ngSwitch]="raceType$ | ngrxPush">
           <sim-utils-time-picker class="md:col-span-2 lg:col-span-12"
@@ -57,9 +62,19 @@ import { FuelCalculatorService } from '../../services/fuel-calculator.service';
                                  inputTitle="Race time - "
                                  [min]="0" [max]="3600 * 24" [step]="60"
                                  (durationChanged)="raceTimeChanged($event)"
+                                 [durationInSeconds]="(raceTimeInSeconds$ | ngrxPush) ?? 0"
                                  [fastButtons]="raceTimeFastButtons"
           ></sim-utils-time-picker>
         </ng-container>
+      </div>
+
+      <div class="text-center mt-5 md:mt-0 lg:col-span-5 p-5" [class.md:col-span-2]="raceTypeIsUnknown$ | ngrxPush">
+        <mat-button-toggle-group class="w-3/5 max-w-xs" aria-label="Race Type">
+          <mat-button-toggle class="w-1/2" [disabled]="(canSaveFuelConsumption$ | ngrxPush) === false" (click)="save()">Save
+          </mat-button-toggle>
+          <mat-button-toggle class="w-1/2" (click)="load()">Load
+          </mat-button-toggle>
+        </mat-button-toggle-group>
       </div>
 
       <div
@@ -158,6 +173,7 @@ export class FuelCalculatorComponent {
 
   exactFuelConsumption$: Observable<number> = this.calculatorService.exactFuelConsumption$;
   canCalculateFuelConsumption$: Observable<boolean> = this.calculatorService.canCalculateFuelConsumption$;
+  canSaveFuelConsumption$: Observable<boolean> = this.calculatorService.canSaveFuelConsumption$;
 
   recommendedFuelConsumption$: Observable<number> = this.calculatorService.recommendedFuelConsumption$;
 
@@ -184,5 +200,13 @@ export class FuelCalculatorComponent {
 
   lapCountChanged(lapcount: number) {
     this.calculatorService.lapCountChanged(lapcount);
+  }
+
+  load() {
+    this.calculatorService.loadLastCalculation();
+  }
+
+  save() {
+    this.calculatorService.saveCalculation();
   }
 }

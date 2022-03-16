@@ -26,7 +26,7 @@ export const reducer = createReducer(
   on(CalculatorActions.fuelPerLapChanged, (s, {fuelPerLap}) => (
     {
       ...s,
-      fuelPerLap: fuelPerLap,
+      fuelPerLap: fuelPerLap
     }
   )),
   on(CalculatorActions.lapTimeChanged, (s, {lapSeconds}) =>
@@ -59,8 +59,9 @@ export const reducer = createReducer(
       {
         ...s,
         lapCount: lapCount,
-        raceTime: s.raceType === RaceDurationType.Lap ? lapCount * s.lapTime : s.raceTime,
+        raceTime: s.raceType === RaceDurationType.Lap ? lapCount * s.lapTime : s.raceTime
       }
     )
-  )
+  ),
+  on(CalculatorActions.calculatorStateHydrated, (s, {state}) => state)
 );

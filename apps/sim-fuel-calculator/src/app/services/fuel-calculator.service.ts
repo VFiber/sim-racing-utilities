@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createSelector, Store } from '@ngrx/store';
 import { BasicRaceData, RaceDurationType, TimeDuration } from '@sim-utils/racing-model';
-import { CalculatorActions, SelectCalculator } from '../state';
+import { CalculatorActions, ExternalStorageActions, SelectCalculator } from '../state';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -21,6 +21,9 @@ export class FuelCalculatorService {
       .pipe(
         map(consumption => consumption > 0)
       );
+
+  readonly canLoadFuelConsumption$: Observable<boolean> = new Observable<boolean>();
+  readonly canSaveFuelConsumption$: Observable<boolean> = this.canCalculateFuelConsumption$;
 
   readonly recommendedFuelConsumption$: Observable<number> = this.store.select(SelectCalculator.recommendedFuelConsumption);
 
@@ -47,5 +50,13 @@ export class FuelCalculatorService {
 
   lapCountChanged(lapcount: number) {
     this.store.dispatch(CalculatorActions.lapCountChanged({lapCount: lapcount}))
+  }
+
+  saveCalculation() {
+    this.store.dispatch(ExternalStorageActions.saveCalculatorState());
+  }
+
+  loadLastCalculation() {
+    this.store.dispatch(ExternalStorageActions.loadLastCalculatorState());
   }
 }
