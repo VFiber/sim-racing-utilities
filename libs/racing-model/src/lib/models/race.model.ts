@@ -57,3 +57,40 @@ export interface Track {
    */
   length: number;
 }
+
+/**
+ * User defined car type
+ */
+export interface Car {
+  /**
+   * Unique incremental ID
+   */
+  id: number;
+  /**
+   * Car name (user defined)
+   */
+  name: string;
+}
+
+/**
+ * A model for the exported database
+ */
+export interface AutocompleteCar {
+  id: string,
+  /**
+   * Model year
+   */
+  Year: number[],
+  /**
+   * Brand (BMW, Mercedes, Honda, Ferrari, etc.)
+   */
+  Make: string,
+  /**
+   * Model type (M2, E, Civic, F430)
+   */
+  Model: string,
+  /**
+   * E.g: Coupe / Sedan / etc.
+   */
+  Category: string,
+}

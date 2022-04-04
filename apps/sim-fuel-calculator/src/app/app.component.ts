@@ -4,8 +4,12 @@ import { Component } from '@angular/core';
   selector: 'sim-utils-root',
   template: `
     <div class="container mx-auto md:p-4" [class.mat-dark]="preferredModeIsDark">
-      <sim-utils-fuel-calculator-page></sim-utils-fuel-calculator-page>
+      <router-outlet></router-outlet>
     </div>
+    <nav>
+      <li><a routerLink="calculator">Fuel Calculator</a></li>
+      <li><a routerLink="sim-garage">Garage</a></li>
+    </nav>
     <footer
       class="container mx-auto my-1 bg-gray-50 dark:bg-gray-900 p-4 md:border-none border dark:border-gray-700 rounded">
       <div class="m-auto mt-0 mb-0 grid grid-cols-3 md:grid-cols-4 w-full md:w-1/2 lg:w-1/2 2xl:w-1/4">

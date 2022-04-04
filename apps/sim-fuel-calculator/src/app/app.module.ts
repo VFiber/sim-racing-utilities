@@ -22,12 +22,16 @@ import { calculatorFeatureKey, reducer as CalculatorReducer } from './state/calc
 import { ReactiveComponentModule } from '@ngrx/component';
 import * as fromExternalStorage from './state/exstorage/external-storage.reducer';
 import { ExternalStorageEffects } from './state/exstorage/external-storage.effects';
+import { MyGarageComponent } from './pages/my-garage/my-garage.component';
+import { CreatorUtilitiesModule } from '@sim-utils/creator-utilities';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     FuelCalculatorComponent,
-    FuelCalculatorPageComponent
+    FuelCalculatorPageComponent,
+    MyGarageComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +42,7 @@ import { ExternalStorageEffects } from './state/exstorage/external-storage.effec
       registrationStrategy: 'registerWhenStable:30000'
     }),
     UiModule,
+    AppRoutingModule,
     StoreModule.forRoot(
       {
         [calculatorFeatureKey]: CalculatorReducer,
@@ -61,6 +66,7 @@ import { ExternalStorageEffects } from './state/exstorage/external-storage.effec
     MatSliderModule,
     MatTooltipModule,
     ReactiveComponentModule,
+    CreatorUtilitiesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

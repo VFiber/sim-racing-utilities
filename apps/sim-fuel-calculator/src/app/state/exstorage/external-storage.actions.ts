@@ -10,7 +10,7 @@ export const loadExternalStorageSuccess = createAction(
 
 export const loadExternalStorageFailure = createAction(
   '[ExternalStorage/API] Load ExternalStorage Failure',
-  props<{ error: unknown }>()
+  props<{ error: string | null | undefined }>()
 );
 
 export const saveCalculatorState = createAction(

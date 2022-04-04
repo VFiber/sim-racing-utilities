@@ -47,7 +47,9 @@
       "unitTestRunner": "jest"
     },
     "@nrwl/angular:component": {
-      "style": "scss"
+      "style": "scss",
+      "inlineTemplate": true,
+      "inlineStyle": true
     }
   },
   "defaultProject": "sim-fuel-calculator"
