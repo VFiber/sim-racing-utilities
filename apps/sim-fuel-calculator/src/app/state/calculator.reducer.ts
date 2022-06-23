@@ -1,20 +1,24 @@
 import { createReducer, on } from '@ngrx/store';
 import * as CalculatorActions from './calculator.actions';
 import { BasicRaceData, RaceDurationType } from '@sim-utils/racing-model';
+import { NamedCalculation } from '../calculator-database/db';
+import * as ExternalStorageActions from './exstorage/external-storage.actions';
 
 export const calculatorFeatureKey = 'calculator';
 
-export const initialState: BasicRaceData = {
+export const initialState: NamedCalculation = {
   raceType: RaceDurationType.Unknown,
   fuelPerLap: 0,
   lapTime: 0,
   raceTime: 0,
-  lapCount: 0
+  lapCount: 0,
+  id: -1,
+  name: ''
 };
 
 export const reducer = createReducer(
   initialState,
-  on(CalculatorActions.raceTypeChanged, (s, {raceType}): BasicRaceData => (
+  on(CalculatorActions.raceTypeChanged, (s, {raceType}): NamedCalculation => (
       {
         ...s,
         raceType: raceType,
@@ -63,5 +67,6 @@ export const reducer = createReducer(
       }
     )
   ),
-  on(CalculatorActions.calculatorStateHydrated, (s, {state}) => state)
+  on(CalculatorActions.calculatorStateHydrated, (s, {state}) => state),
+  on(ExternalStorageActions.deleteCalculatorState, (state) => ({...state, id: -1}))
 );

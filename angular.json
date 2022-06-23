@@ -11,7 +11,7 @@
           "builder": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/creator-utilities"],
           "options": {
-            "jestConfig": "libs/creator-utilities/jest.config.js",
+            "jestConfig": "libs/creator-utilities/jest.config.ts",
             "passWithNoTests": true
           }
         },
@@ -37,7 +37,7 @@
           "builder": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/racing-model"],
           "options": {
-            "jestConfig": "libs/racing-model/jest.config.js",
+            "jestConfig": "libs/racing-model/jest.config.ts",
             "passWithNoTests": true
           }
         },
@@ -74,9 +74,7 @@
               "apps/sim-fuel-calculator/src/assets",
               "apps/sim-fuel-calculator/src/manifest.webmanifest"
             ],
-            "styles": [
-              "apps/sim-fuel-calculator/src/styles.scss"
-            ],
+            "styles": ["apps/sim-fuel-calculator/src/styles.scss"],
             "scripts": [],
             "serviceWorker": true,
             "ngswConfigPath": "apps/sim-fuel-calculator/ngsw-config.json"
@@ -87,7 +85,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -145,7 +143,7 @@
           "builder": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/sim-fuel-calculator"],
           "options": {
-            "jestConfig": "apps/sim-fuel-calculator/jest.config.js",
+            "jestConfig": "apps/sim-fuel-calculator/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -190,7 +188,7 @@
           "builder": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/ui"],
           "options": {
-            "jestConfig": "libs/ui/jest.config.js",
+            "jestConfig": "libs/ui/jest.config.ts",
             "passWithNoTests": true
           }
         },

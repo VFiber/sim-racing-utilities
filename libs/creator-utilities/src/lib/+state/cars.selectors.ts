@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { CARS_FEATURE_KEY, carsAdapter, State } from './cars.reducer';
-import { CarsEntity } from '@sim-utils/creator-utilities';
+import { CarsEntity } from './cars.models';
 
 // Lookup the 'Cars' feature state managed by NgRx
 export const getCarsState = createFeatureSelector<State>(CARS_FEATURE_KEY);

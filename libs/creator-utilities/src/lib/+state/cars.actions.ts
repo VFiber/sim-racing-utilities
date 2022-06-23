@@ -1,16 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 import { CarsEntity } from './cars.models';
+import { ErrorNotification } from 'rxjs';
 
 export const init = createAction('[Cars Page] Init');
 
 export const loadCarsSuccess = createAction(
   '[Cars/API] Load Cars Success',
   props<{ cars: CarsEntity[] }>()
-);
-
-export const loadCarsFailure = createAction(
-  '[Cars/API] Load Cars Failure',
-  props<{ error: any }>()
 );
 
 export const categoryFilterAdded = createAction(
@@ -20,7 +16,7 @@ export const categoryFilterAdded = createAction(
 
 export const brandFilterAdded = createAction(
   '[Cars Filter] Brand filter added',
-  props<{ filterBrand: string }>()
+  props<{ readonly filterBrand: string }>()
 )
 
 export const modelFilterAdded = createAction(

@@ -28,9 +28,9 @@ describe('ExternalStorageEffects', () => {
 
   describe('init$', () => {
     it('should work', () => {
-      actions = hot('-a-|', { a: ExternalStorageActions.loadLastCalculatorState() });
+      actions = hot('-a-|', { a: ExternalStorageActions.autoLoadLastCalculatorState() });
 
-      const expected = hot('-a-|', {
+      const expected = hot('-?-|', {
         a: ExternalStorageActions.loadExternalStorageSuccess({
           externalStorage: [],
         }),

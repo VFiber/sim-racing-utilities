@@ -6,10 +6,12 @@ import { Component } from '@angular/core';
     <div class="container mx-auto md:p-4" [class.mat-dark]="preferredModeIsDark">
       <router-outlet></router-outlet>
     </div>
+<!--
     <nav>
       <li><a routerLink="calculator">Fuel Calculator</a></li>
       <li><a routerLink="sim-garage">Garage</a></li>
     </nav>
+    -->
     <footer
       class="container mx-auto my-1 bg-gray-50 dark:bg-gray-900 p-4 md:border-none border dark:border-gray-700 rounded">
       <div class="m-auto mt-0 mb-0 grid grid-cols-3 md:grid-cols-4 w-full md:w-1/2 lg:w-1/2 2xl:w-1/4">
@@ -19,7 +21,7 @@ import { Component } from '@angular/core';
         <div class="col-span-2 md:col-span-3 flex flex-col place-content-center">
         <span class="signature">
           SimRacing fuel calculator
-          <span class="text-xs underline decoration-indigo-500/30">v0.4.0</span> by
+          <span class="text-xs underline decoration-indigo-500/30">v0.5.0a - Feature test</span> by
           <a class="underline" href="https://github.com/VFiber/sim-racing-utilities" target="_blank">Fiber</a>
       </span>
       <span class="text-left">

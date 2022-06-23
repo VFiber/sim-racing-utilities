@@ -20,11 +20,14 @@ import { FuelCalculatorPageComponent } from './pages';
 import { CalculatorEffects } from './state/calculator.effects';
 import { calculatorFeatureKey, reducer as CalculatorReducer } from './state/calculator.reducer';
 import { ReactiveComponentModule } from '@ngrx/component';
-import * as fromExternalStorage from './state/exstorage/external-storage.reducer';
 import { ExternalStorageEffects } from './state/exstorage/external-storage.effects';
 import { MyGarageComponent } from './pages/my-garage/my-garage.component';
 import { CreatorUtilitiesModule } from '@sim-utils/creator-utilities';
 import { AppRoutingModule } from './app-routing.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { externalStorageFeatureKey, reducer as ExternalStorageReducer } from './state/exstorage/external-storage.reducer';
 
 @NgModule({
   declarations: [
@@ -46,7 +49,7 @@ import { AppRoutingModule } from './app-routing.module';
     StoreModule.forRoot(
       {
         [calculatorFeatureKey]: CalculatorReducer,
-        [fromExternalStorage.EXTERNAL_STORAGE_FEATURE_KEY]: fromExternalStorage.reducer
+        [externalStorageFeatureKey]: ExternalStorageReducer
       },
       {
         metaReducers: !environment.production ? [] : [],
@@ -66,7 +69,10 @@ import { AppRoutingModule } from './app-routing.module';
     MatSliderModule,
     MatTooltipModule,
     ReactiveComponentModule,
-    CreatorUtilitiesModule
+    CreatorUtilitiesModule,
+    FontAwesomeModule,
+    MatButtonModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

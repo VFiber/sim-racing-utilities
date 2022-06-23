@@ -1,34 +1,34 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromCalculator from './calculator.reducer';
-import { BasicRaceData } from '@sim-utils/racing-model';
+import { NamedCalculation } from '../calculator-database/db';
 
-export const state = createFeatureSelector<BasicRaceData>(
+export const state = createFeatureSelector<NamedCalculation>(
   fromCalculator.calculatorFeatureKey
 );
 
 export const raceType = createSelector(
   state,
-  (state: BasicRaceData) => state.raceType
+  (state: NamedCalculation) => state.raceType
 )
 
 export const lapTime = createSelector(
   state,
-  (state: BasicRaceData) => state.lapTime
+  (state: NamedCalculation) => state.lapTime
 )
 
 export const fuelPerLap = createSelector(
   state,
-  (state: BasicRaceData) => state.fuelPerLap
+  (state: NamedCalculation) => state.fuelPerLap
 )
 
 export const lapCount = createSelector(
   state,
-  (state: BasicRaceData) => state.lapCount
+  (state: NamedCalculation) => state.lapCount
 )
 
 export const raceTime = createSelector(
   state,
-  (state: BasicRaceData) => state.raceTime
+  (state: NamedCalculation) => state.raceTime
 )
 
 export const exactFuelConsumption = createSelector(
@@ -39,4 +39,9 @@ export const exactFuelConsumption = createSelector(
 export const recommendedFuelConsumption = createSelector(
   state,
   (data) => (data.lapCount + 1) * data.fuelPerLap
+)
+
+export const isLoadedCalculation = createSelector(
+  state,
+  (data) => data.id !== -1
 )

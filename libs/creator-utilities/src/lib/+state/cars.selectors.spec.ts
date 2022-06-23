@@ -5,10 +5,9 @@ import * as CarsSelectors from './cars.selectors';
 describe('Cars Selectors', () => {
   const ERROR_MSG = 'No Error Available';
   const getCarsId = (it: CarsEntity) => it.id;
-  const createCarsEntity = (id: string, name = '') =>
+  const createCarsEntity = (id: string) =>
     ({
       id,
-      name: name || `name-${id}`,
     } as CarsEntity);
 
   let state: CarsPartialState;

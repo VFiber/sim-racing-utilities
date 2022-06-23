@@ -29,12 +29,3 @@ $app-dark-theme: mat.define-dark-theme(
 .mat-dark {
   @include angular-material-theme($app-dark-theme);
 }
-
-input[type=number] {
-  text-align: center;
-}
-.mat-form-field-label {
-  text-align: center;
-}
-
-

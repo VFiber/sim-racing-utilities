@@ -21,7 +21,8 @@ type InputType = null | 'days' | 'hours' | 'minutes' | 'seconds' | 'ms';
         ></fa-icon>
         <fa-icon size="2x" [icon]="clearIcon" class="absolute -top-7 right-0 px-5" (click)="clear()"
                  matTooltip="Resets the time" matTooltipPosition="above"></fa-icon>
-        <mat-label class="w-full text-gray-500 dark:text-gray-300 block text-center -mb-3" [class.text-black]="activeInput !== null">
+        <mat-label class="w-full text-gray-500 dark:text-gray-300 block text-center -mb-3"
+                   [class.text-black]="activeInput !== null">
           <ng-container *ngIf="activeInput">
             Slide to change: {{sliderValue}} {{activeInput}}
           </ng-container>
@@ -73,13 +74,17 @@ type InputType = null | 'days' | 'hours' | 'minutes' | 'seconds' | 'ms';
           <fa-icon [icon]="editIcon" matSuffix (click)="inputClicked($event, 'ms')"></fa-icon>
         </mat-form-field>
       </div>
-      <div *ngIf="fastButtons.length > 0" class="text-center">
-        <button mat-button *ngFor="let button of fastButtons"
-                (click)="fastButtonClick(button)">{{button.title}}</button>
+      <div class="fast-buttons" *ngIf="fastButtonsRows.length > 0">
+      <div *ngFor="let fastButtonsRow of fastButtonsRows" class="text-center">
+        <button mat-button *ngFor="let button of fastButtonsRow" (click)="fastButtonClick(button)">{{button.title}}</button>
+      </div>
       </div>
     </div>
   `,
-  styleUrls: ['./sim-utils-time-picker.component.scss']
+  styleUrls: [
+    './sim-utils-time-picker.component.scss',
+    '../input-styles.scss'
+  ]
 })
 export class SimUtilsTimePickerComponent implements OnInit {
   activeInput: InputType = null;
@@ -117,7 +122,7 @@ export class SimUtilsTimePickerComponent implements OnInit {
     this.sliderDefaultStep = val;
   };
 
-  @Input() fastButtons: FastInputButton[] = [];
+  @Input() fastButtonsRows: FastInputButton[][] = [];
 
   sliderDefaultMin = 0;
   sliderDefaultMax = 60;
@@ -270,6 +275,10 @@ export class SimUtilsTimePickerComponent implements OnInit {
     if (button?.type && button.type == ValueOperationType.Replace) {
       return this.setSecondsSelf(button.value);
     }
-    return this.setSecondsSelf(this.duration.durationInSeconds + button.value);
+    if (this.duration.durationInSeconds + button.value > 0) {
+      return this.setSecondsSelf(this.duration.durationInSeconds + button.value);
+    }
+
+    return this.setSecondsSelf(0);
   }
 }

@@ -7,7 +7,8 @@ import { faRedo } from '@fortawesome/free-solid-svg-icons/faRedo';
   selector: 'sim-utils-slide-input',
   template: `
     <div class="mb-3 mt-8 select-none p-3 relative bg-gray-50 dark:bg-gray-900 grid grid-cols-3 gap-3">
-      <fa-icon size="lg" [icon]="questionIcon" class="absolute -top-5 left-0 p-5" (click)="!disabled ? tooltip.toggle() :''"
+      <fa-icon size="lg" [icon]="questionIcon" class="absolute -top-5 left-0 p-5"
+               (click)="!disabled ? tooltip.toggle() :''"
                #tooltip="matTooltip"
                matTooltip="Use the slider / use the input and type in with the keyboard (Tab / Shift+Tab & Arrows also works!)"
                matTooltipPosition="above"
@@ -37,7 +38,10 @@ import { faRedo } from '@fortawesome/free-solid-svg-icons/faRedo';
       </div>
     </div>
   `,
-  styleUrls: ['./slide-input.component.scss']
+  styleUrls: [
+    './slide-input.component.scss',
+    '../input-styles.scss'
+  ]
 })
 export class SlideInputComponent implements ControlValueAccessor {
   @Input() min?: number | string;

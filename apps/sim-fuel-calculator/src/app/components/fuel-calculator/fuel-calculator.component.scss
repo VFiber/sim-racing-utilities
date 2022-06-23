@@ -8,3 +8,15 @@
     }
   }
 }
+
+mat-form-field {
+  width: 100%;
+}
+mat-selection-list {
+  width: 100%;
+}
+
+.load {
+  max-height: 30em;
+  overflow-y: auto;
+}

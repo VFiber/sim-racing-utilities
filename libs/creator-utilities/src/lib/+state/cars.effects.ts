@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import cars from './../database/cars.json';
 
 import * as CarsActions from './cars.actions';
-import { map, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { AutocompleteCar } from '@sim-utils/racing-model';
 
 @Injectable()

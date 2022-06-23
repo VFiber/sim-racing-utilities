@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CarsActions, CarsSelectors } from '../../+state';
 import { map, Observable, tap } from 'rxjs';
-import { CarsEntity } from '@sim-utils/creator-utilities';
+import { CarsEntity } from './../../+state/cars.models';
 import { AutocompleteCar } from '@sim-utils/racing-model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
+const maxFilter = (items: any[]) => items.length > 100 ? [] : items;
 
 @Component({
   selector: 'sim-utils-create-car',
@@ -120,9 +122,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class CreateCarComponent {
   showSearchForm = false;
-
   displayedColumns: string[] = ['Model', 'Year', 'Category'];
-  maxFilter = (items: any[]) => items.length > 100 ? [] : items;
 
   selectedYear = 0;
   carName = '';
@@ -136,13 +136,13 @@ export class CreateCarComponent {
 
   carCategories$ = this.store.select(CarsSelectors.getCarCategories);
   carBrands$ = this.store.select(CarsSelectors.getFilteredCarBrands)
-    .pipe(map(this.maxFilter));
+    .pipe(map(maxFilter));
 
   carModels$ = this.store.select(CarsSelectors.getFilteredCarModels)
-    .pipe(map(this.maxFilter));
+    .pipe(map(maxFilter));
 
   carYears$ = this.store.select(CarsSelectors.getFilteredCarYears)
-    .pipe(map(this.maxFilter));
+    .pipe(map(maxFilter));
 
   selectedCategory$: Observable<string> = this.store.select(CarsSelectors.getFilterCategory);
   selectedBrand$: Observable<string> = this.store.select(CarsSelectors.getFilterBrand);
@@ -189,10 +189,13 @@ export class CreateCarComponent {
     this.snackBar.open(this.carName + " has been set.", "Close search", {duration: 5000})
       .onAction()
       .pipe()
-      .subscribe(() => window.scroll({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      }));
+      .subscribe(() => {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
+        this.showSearchForm = false;
+      });
   }
 }

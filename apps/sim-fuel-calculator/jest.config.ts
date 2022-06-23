@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'racing-model',
+/* eslint-disable */
+export default {
+  displayName: 'sim-fuel-calculator',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -8,7 +9,7 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/libs/racing-model',
+  coverageDirectory: '../../coverage/apps/sim-fuel-calculator',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

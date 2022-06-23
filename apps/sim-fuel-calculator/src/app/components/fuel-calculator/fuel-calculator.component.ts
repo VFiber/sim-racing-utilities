@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { BasicRaceData, RaceDurationType, TimeDuration } from '@sim-utils/racing-model';
 import { Store } from '@ngrx/store';
 import { FastInputButton } from '@sim-utils/ui';
 import { Observable } from 'rxjs';
 import { FuelCalculatorService } from '../../services/fuel-calculator.service';
+import { ExternalStorageActions } from '../../state';
+import { NamedCalculation } from '../../calculator-database/db';
 
 @Component({
   selector: 'sim-utils-fuel-calculator',
@@ -60,25 +62,52 @@ import { FuelCalculatorService } from '../../services/fuel-calculator.service';
           <sim-utils-time-picker class="md:col-span-2 lg:col-span-12"
                                  *ngSwitchCase="RaceType.Time"
                                  inputTitle="Race time - "
-                                 [min]="0" [max]="3600 * 24" [step]="60"
+                                 [min]="0" [max]="3600 * 24" [step]="600"
                                  (durationChanged)="raceTimeChanged($event)"
                                  [durationInSeconds]="(raceTimeInSeconds$ | ngrxPush) ?? 0"
-                                 [fastButtons]="raceTimeFastButtons"
+                                 [fastButtonsRows]="raceTimeFastButtons"
           ></sim-utils-time-picker>
         </ng-container>
       </div>
-
-      <div class="text-center mt-5 md:mt-0 lg:col-span-5 p-5" [class.md:col-span-2]="raceTypeIsUnknown$ | ngrxPush">
-        <mat-button-toggle-group class="w-3/5 max-w-xs" aria-label="Race Type">
-          <mat-button-toggle class="w-1/2" [disabled]="(canSaveFuelConsumption$ | ngrxPush) === false" (click)="save()">Save
-          </mat-button-toggle>
-          <mat-button-toggle class="w-1/2" (click)="load()">Load
-          </mat-button-toggle>
-        </mat-button-toggle-group>
+      <div class="dark:border-gray-700 md:grid-cols-2 xl:grid-cols-1 xl:col-span-4 p-3 bg-white bg-gray-50 dark:bg-gray-900 overflow-hidden">
+        <div>
+          <h2>Save current calculation as</h2>
+          <mat-form-field>
+            <mat-label>Calculation name</mat-label>
+            <input matInput type="text" placeholder="E.g.: Trackname - Carname - conditions" #calculationName
+                   [(ngModel)]="currentCalculationName">
+            <button matSuffix color="warn"
+                    mat-button *ngIf="loadedCalculation"
+                    (click)="deleteCalculation(loadedCalculation)">
+              Delete
+            </button>
+            <button
+              *ngIf="isLoadedCalculation$ | async"
+              [disabled]="!calculationName.value" mat-button matSuffix
+              color="accent"
+              (click)="saveCurrentCalculationAs(calculationName.value)">Update
+            </button>
+            <button [disabled]="!calculationName.value" mat-button matSuffix
+                    color="primary"
+                    (click)="saveCurrentCalculationAs(calculationName.value, true)">Save</button>
+          </mat-form-field>
+        </div>
+        <div class="load" *ngIf="(externalCalculations$ | async)?.length! > 0">
+          <h2>Load calculation</h2>
+          <mat-selection-list class="saves" [multiple]="false">
+            <mat-list-option *ngFor="let calculation of externalCalculations$ | async" [value]="calculation"
+                             (click)="loadCalculation(calculation)">
+              <div>
+                <div mat-line>{{calculation.name}}</div>
+                <div mat-line>T: {{calculation.raceType}} R: {{calculation.raceTime | secondsToInterval}} L: {{calculation.lapTime}}
+                  FC: {{calculation.fuelPerLap}}</div>
+              </div>
+            </mat-list-option>
+          </mat-selection-list>
+        </div>
       </div>
-
       <div
-        class="border dark:border-gray-700 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 xl:col-span-4 bg-white dark:bg-gray-900 overflow-hidden sm:rounded-lg"
+        class="border dark:border-gray-700 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 xl:col-span-12 bg-white dark:bg-gray-900 overflow-hidden sm:rounded-lg"
         *ngIf="!(raceTypeIsUnknown$ | ngrxPush)">
         <div>
           <dl>
@@ -140,28 +169,52 @@ import { FuelCalculatorService } from '../../services/fuel-calculator.service';
   styleUrls: ['./fuel-calculator.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FuelCalculatorComponent {
-  raceTimeFastButtons: FastInputButton[] = [
-    {
-      title: ' +10m',
-      value: 60 * 10
-    },
-    {
-      title: ' +20m',
-      value: 60 * 20
-    },
-    {
-      title: ' +1h',
-      value: 3600
-    },
-    {
-      title: ' +2h',
-      value: 3600 * 2
-    },
-    {
-      title: ' +24h',
-      value: 3600 * 24
-    }
+export class FuelCalculatorComponent implements OnInit, OnDestroy {
+  raceTimeFastButtons: FastInputButton[][] = [
+    [
+      {
+        title: '-1m',
+        value: -60
+      },
+      {
+        title: '-2m',
+        value: -60 * 2
+      },
+      {
+        title: '-5m',
+        value: -60 * 5
+      },
+      {
+        title: '+1m',
+        value: 60
+      },
+      {
+        title: '+2m',
+        value: 60 * 2
+      },
+      {
+        title: '+5m',
+        value: 60 * 5
+      }
+    ],
+    [
+      {
+        title: '-1h',
+        value: -3600
+      },
+      {
+        title: '-2h',
+        value: -3600 * 2
+      },
+      {
+        title: '+1h',
+        value: 3600
+      },
+      {
+        title: '+2h',
+        value: 3600 * 2
+      }
+    ]
   ];
   RaceType = RaceDurationType;
 
@@ -173,12 +226,18 @@ export class FuelCalculatorComponent {
 
   exactFuelConsumption$: Observable<number> = this.calculatorService.exactFuelConsumption$;
   canCalculateFuelConsumption$: Observable<boolean> = this.calculatorService.canCalculateFuelConsumption$;
-  canSaveFuelConsumption$: Observable<boolean> = this.calculatorService.canSaveFuelConsumption$;
 
   recommendedFuelConsumption$: Observable<number> = this.calculatorService.recommendedFuelConsumption$;
 
   lapTimeInSeconds$: Observable<number> = this.calculatorService.lapTimeInSeconds$;
   raceTimeInSeconds$: Observable<number> = this.calculatorService.raceTimeInSeconds$;
+
+  externalCalculations$: Observable<NamedCalculation[]> = this.calculatorService.externalCalculations$;
+  isLoadedCalculation$: Observable<boolean> = this.calculatorService.isLoadedCalculation$;
+
+  loadedCalculation: NamedCalculation | null = null;
+
+  currentCalculationName = '';
 
   constructor(private store: Store<BasicRaceData>, private calculatorService: FuelCalculatorService) {}
 
@@ -202,11 +261,26 @@ export class FuelCalculatorComponent {
     this.calculatorService.lapCountChanged(lapcount);
   }
 
-  load() {
+  saveCurrentCalculationAs(name: string, asNew: boolean = false) {
+    this.store.dispatch(ExternalStorageActions.saveCurrentCalculatorState({name: name, asNew: asNew}))
+  }
+
+  deleteCalculation(calc: NamedCalculation) {
+    this.loadedCalculation = null;
+    this.store.dispatch(ExternalStorageActions.deleteCalculatorState({id: calc.id ?? 0}))
+  }
+
+  loadCalculation(namedCalc: NamedCalculation) {
+    this.loadedCalculation = namedCalc;
+    this.currentCalculationName = namedCalc.name;
+    this.store.dispatch(ExternalStorageActions.loadCalculatorState({namedCalculation: namedCalc}))
+  }
+
+  ngOnInit(): void {
     this.calculatorService.loadLastCalculation();
   }
 
-  save() {
+  ngOnDestroy(): void {
     this.calculatorService.saveCalculation();
   }
 }

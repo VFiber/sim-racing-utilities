@@ -34,11 +34,10 @@ export const initialState: State = carsAdapter.getInitialState({
 
 const carsReducer = createReducer(
   initialState,
-  on(CarsActions.init, (state) => ({...state, loaded: false, error: null})),
+  on(CarsActions.init, (state) => ({...state, loaded: false})),
   on(CarsActions.loadCarsSuccess, (state, {cars}) =>
     carsAdapter.setAll(cars, {...state, loaded: true})
   ),
-  on(CarsActions.loadCarsFailure, (state, {error}) => ({...state, error})),
   on(CarsActions.categoryFilterAdded, (state, {filterCategory}) => ({...state, filterCategory})),
   on(CarsActions.brandFilterAdded, (state, {filterBrand}) => ({...state, filterBrand})),
   on(CarsActions.modelFilterAdded, (state, {filterModel}) => ({...state, filterModel})),

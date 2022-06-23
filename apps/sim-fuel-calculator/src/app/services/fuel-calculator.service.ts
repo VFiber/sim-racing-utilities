@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { createSelector, Store } from '@ngrx/store';
 import { BasicRaceData, RaceDurationType, TimeDuration } from '@sim-utils/racing-model';
-import { CalculatorActions, ExternalStorageActions, SelectCalculator } from '../state';
+import { CalculatorActions, ExternalStorageActions, SelectCalculator, SelectExternalStorage } from '../state';
 import { map, Observable } from 'rxjs';
+import { NamedCalculation } from '../calculator-database/db';
+import { isLoadedCalculation } from '../state/calculator.selectors';
 
 @Injectable({
   providedIn: 'root'
@@ -22,15 +24,16 @@ export class FuelCalculatorService {
         map(consumption => consumption > 0)
       );
 
-  readonly canLoadFuelConsumption$: Observable<boolean> = new Observable<boolean>();
-  readonly canSaveFuelConsumption$: Observable<boolean> = this.canCalculateFuelConsumption$;
-
   readonly recommendedFuelConsumption$: Observable<number> = this.store.select(SelectCalculator.recommendedFuelConsumption);
 
   readonly lapTimeInSeconds$: Observable<number> = this.store.select(SelectCalculator.lapTime);
   readonly raceTimeInSeconds$: Observable<number> = this.store.select(SelectCalculator.raceTime);
+  readonly externalCalculations$: Observable<NamedCalculation[]> = this.store.select(SelectExternalStorage.savedCalculations);
 
-  constructor(private store: Store<BasicRaceData>) { }
+  readonly isLoadedCalculation$: Observable<boolean> = this.store.select(SelectCalculator.isLoadedCalculation);
+
+  constructor(private store: Store<BasicRaceData>) {
+  }
 
   raceTypeChanged(newRaceType: RaceDurationType) {
     this.store.dispatch(CalculatorActions.raceTypeChanged({raceType: newRaceType}))
@@ -53,10 +56,10 @@ export class FuelCalculatorService {
   }
 
   saveCalculation() {
-    this.store.dispatch(ExternalStorageActions.saveCalculatorState());
+    this.store.dispatch(ExternalStorageActions.autoSaveCalculatorState());
   }
 
   loadLastCalculation() {
-    this.store.dispatch(ExternalStorageActions.loadLastCalculatorState());
+    this.store.dispatch(ExternalStorageActions.autoLoadLastCalculatorState());
   }
 }
