@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -32,7 +33,8 @@ describe('AppComponent', () => {
         MatInputModule,
         MatSliderModule,
         MatTooltipModule,
-        ReactiveComponentModule
+        ReactiveComponentModule,
+        RouterTestingModule
       ],
       providers: [
         provideMockStore({

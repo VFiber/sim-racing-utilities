@@ -1,15 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FuelCalculatorPageComponent } from './fuel-calculator-page.component';
-import { FuelCalculatorComponent } from '../../components/fuel-calculator/fuel-calculator.component';
-import { provideMockStore } from '@ngrx/store/testing';
-import { ReactiveComponentModule } from '@ngrx/component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { UiModule } from '@sim-utils/ui';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { SelectCalculator } from '../../state';
-import { initialState } from '../../state/calculator.reducer';
+import {FuelCalculatorPageComponent} from './fuel-calculator-page.component';
+import {FuelCalculatorComponent} from '../../components/fuel-calculator/fuel-calculator.component';
+import {provideMockStore} from '@ngrx/store/testing';
+import {ReactiveComponentModule} from '@ngrx/component';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {UiModule} from '@sim-utils/ui';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {SelectCalculator} from '../../state';
+import {initialState} from '../../state/calculator.reducer';
+import {RouterTestingModule} from "@angular/router/testing";
+import {MatInputModule} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
 
 describe('FuelCalculatorPageComponent', () => {
   let component: FuelCalculatorPageComponent;
@@ -22,7 +25,10 @@ describe('FuelCalculatorPageComponent', () => {
         UiModule,
         MatFormFieldModule,
         MatButtonToggleModule,
-        ReactiveComponentModule
+        ReactiveComponentModule,
+        RouterTestingModule,
+        MatInputModule,
+        FormsModule
       ],
       declarations: [
         FuelCalculatorPageComponent,

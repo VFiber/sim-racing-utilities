@@ -2,6 +2,7 @@
   "version": 1,
   "projects": {
     "creator-utilities": {
+      "$schema": "../../node_modules/nx/schemas/project-schema.json",
       "projectType": "library",
       "root": "libs/creator-utilities",
       "sourceRoot": "libs/creator-utilities/src",
@@ -28,6 +29,7 @@
       "tags": []
     },
     "racing-model": {
+      "$schema": "../../node_modules/nx/schemas/project-schema.json",
       "projectType": "library",
       "root": "libs/racing-model",
       "sourceRoot": "libs/racing-model/src",
@@ -54,6 +56,7 @@
       "tags": []
     },
     "sim-fuel-calculator": {
+      "$schema": "../../node_modules/nx/schemas/project-schema.json",
       "projectType": "application",
       "root": "apps/sim-fuel-calculator",
       "sourceRoot": "apps/sim-fuel-calculator/src",
@@ -151,6 +154,7 @@
       "tags": []
     },
     "sim-fuel-calculator-e2e": {
+      "$schema": "../../node_modules/nx/schemas/project-schema.json",
       "root": "apps/sim-fuel-calculator-e2e",
       "sourceRoot": "apps/sim-fuel-calculator-e2e/src",
       "projectType": "application",
@@ -179,6 +183,7 @@
       "implicitDependencies": ["sim-fuel-calculator"]
     },
     "ui": {
+      "$schema": "../../node_modules/nx/schemas/project-schema.json",
       "projectType": "library",
       "root": "libs/ui",
       "sourceRoot": "libs/ui/src",

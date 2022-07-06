@@ -10,6 +10,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { initialState } from '../../state/calculator.reducer';
 import { ReactiveComponentModule } from '@ngrx/component';
 import { SelectCalculator } from '../../state';
+import {MatInputModule} from "@angular/material/input";
 
 describe('FuelCalculatorComponent', () => {
   let component: FuelCalculatorComponent;
@@ -23,6 +24,7 @@ describe('FuelCalculatorComponent', () => {
         FormsModule,
         UiModule,
         MatFormFieldModule,
+        MatInputModule,
         ReactiveComponentModule
       ],
       declarations: [FuelCalculatorComponent],
